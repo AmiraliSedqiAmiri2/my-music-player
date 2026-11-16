@@ -1,4 +1,4 @@
-const audio = document.getElementById("audio");
+ const audio = document.getElementById("audio");
 const imageAudio = document.querySelector(".photo__img");
 const titleAudio = document.querySelector(".music__title");
 const artistAudio = document.querySelector(".music__artist");
