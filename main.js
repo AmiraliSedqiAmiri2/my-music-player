@@ -15,17 +15,17 @@ const playlist = [
 
   {
     id: 1,
-    title: "Janam raft 2",
-    artist: "Sorena & Bahram",
-    image: "./assets/img/bs.jpg",
-    src: "./assets/music/janm.mp3",
+    title: "Vasiat 2",
+    artist: "Naji",
+    image: "./assets/img/naji2.webp",
+    src: "./assets/music/vasiat.mp3",
   },
   {
     id: 2,
-    title: "Ghorsaye Abi",
-    artist: "Remix",
-    image: "./assets/img/back.jpg",
-    src: "./assets/music/GhorsayeAbi2.mp3",
+    title: "Tadriji",
+    artist: "Naji",
+    image: "./assets/img/naji.webp",
+    src: "./assets/music/tadriji.mp3",
   },
 ];
 
