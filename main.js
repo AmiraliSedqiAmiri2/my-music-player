@@ -1,4 +1,5 @@
- const audio = document.getElementById("audio");
+
+const audio = document.getElementById("audio");
 const imageAudio = document.querySelector(".photo__img");
 const titleAudio = document.querySelector(".music__title");
 const artistAudio = document.querySelector(".music__artist");
@@ -11,133 +12,178 @@ const nextButton = document.querySelector(".next__btn");
 const volumeAudio = document.querySelector(".volume__range");
 
 const playlist = [
-   {
+  {
     id: 1,
     title: "Gedaei",
     artist: "Amir Tataloo",
     image: "./assets/img/gedaei.jpg",
     src: "./assets/music/Amirtataloo.mp3",
   },
-   {
+  {
     id: 2,
-    title: "Noon o Panir o Sabzi",
-    artist: "Ebi & Dariush",
-    image: "./assets/img/ebidar.jpg",
-    src: "./assets/music/noon.mp3",
-  },
-   {
-    id: 3,
     title: "Janam raft 2",
     artist: "Sorena & Bahram",
     image: "./assets/img/bs.jpg",
     src: "./assets/music/janm.mp3",
   },
-  
- 
-   {
-    id: 4,
+  {
+    id: 3,
     title: "Ghorsaye Abi",
     artist: "Remix",
     image: "./assets/img/back.jpg",
     src: "./assets/music/GhorsayeAbi2.mp3",
   },
-  
 ];
 
 let currentTrackIndex = 0;
 let isPlaying = false;
 
-const loadTrack = () => {
+function updatePlayIcon() {
+  const icon = playButton.firstElementChild;
+
+  if (!icon) return;
+
+  icon.classList.toggle("fa-play", !isPlaying);
+  icon.classList.toggle("fa-pause", isPlaying);
+}
+
+function formatTime(time) {
+  if (!Number.isFinite(time)) return "0:00";
+
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60);
+
+  return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+}
+
+// Load track
+function loadTrack() {
   const track = playlist[currentTrackIndex];
+
+  audio.pause();
+  isPlaying = false;
+
   audio.src = track.src;
+  audio.load();
+
   imageAudio.src = track.image;
   titleAudio.textContent = track.title;
   artistAudio.textContent = track.artist;
+
   inputRange.value = 0;
+  currentTime.textContent = "0:00";
+  totalTime.textContent = "0:00";
 
-  if (isPlaying) {
-    audio.play();
+  updatePlayIcon();
+}
+
+// Play track
+async function playTrack() {
+  try {
+    await audio.play();
+    isPlaying = true;
+    updatePlayIcon();
+  } catch (error) {
+    isPlaying = false;
+    updatePlayIcon();
+    console.error("Playback error:", error);
   }
-};
+}
 
-// event play pause button
+// Pause track
+function pauseTrack() {
+  audio.pause();
+  isPlaying = false;
+  updatePlayIcon();
+}
+
+// Play / Pause button
 playButton.addEventListener("click", () => {
-  const icon = playButton.firstElementChild;
-
-  if (isPlaying) {
-    audio.pause();
-    icon.classList.replace("fa-pause", "fa-play");
+  if (audio.paused) {
+    playTrack();
   } else {
-    audio.play();
-    icon.classList.replace("fa-play", "fa-pause");
+    pauseTrack();
   }
-
-  isPlaying = !isPlaying;
 });
 
-// next Buttons
-nextButton.addEventListener("click", () => {
+// Next track
+function nextTrack() {
   currentTrackIndex++;
-  if (currentTrackIndex > playlist.length - 1) {
+
+  if (currentTrackIndex >= playlist.length) {
     currentTrackIndex = 0;
   }
 
-  playButton.firstElementChild.classList.replace("fa-play", "fa-pause");
-  isPlaying = true;
   loadTrack();
-});
+  playTrack();
+}
 
-// prev Buttons
+nextButton.addEventListener("click", nextTrack);
+
+// Previous track
 prevButton.addEventListener("click", () => {
   currentTrackIndex--;
+
   if (currentTrackIndex < 0) {
     currentTrackIndex = playlist.length - 1;
   }
-  playButton.firstElementChild.classList.replace("fa-play", "fa-pause");
-  isPlaying = true;
+
   loadTrack();
+  playTrack();
 });
 
-//  Update audio playback time when the progress bar changes
-inputRange.addEventListener("input", () => {
-  const newTime = audio.duration * (inputRange.value / 100);
-
-  audio.currentTime = newTime;
-});
-
-// input Volume Music
-volumeAudio.addEventListener("input", (e) => {
-  audio.volume = e.target.value;
-});
-
+// Update progress
 audio.addEventListener("timeupdate", () => {
-  const current = audio.currentTime;
-  const total = audio.duration;
+  if (!Number.isFinite(audio.duration)) return;
 
-  const percentage = (current / total) * 100;
+  const percentage =
+    (audio.currentTime / audio.duration) * 100;
 
-  if (percentage) {
-    inputRange.value = percentage;
-  }
-  if (current && total) {
-    currentTime.textContent = formatTime(current);
-    totalTime.textContent = formatTime(total);
+  inputRange.value = percentage;
+
+  currentTime.textContent = formatTime(audio.currentTime);
+  totalTime.textContent = formatTime(audio.duration);
+});
+
+// Load duration
+audio.addEventListener("loadedmetadata", () => {
+  totalTime.textContent = formatTime(audio.duration);
+});
+
+// Seek music
+inputRange.addEventListener("input", () => {
+  if (Number.isFinite(audio.duration)) {
+    audio.currentTime =
+      audio.duration * (inputRange.value / 100);
   }
 });
 
-// get minutes and secends
-const formatTime = (time) => {
-  const minutes = Math.floor(time / 60);
-  const secends = Math.floor(time % 60);
+// Volume
+volumeAudio.addEventListener("input", (e) => {
+  audio.volume = Number(e.target.value);
+});
 
-  return `${minutes}:${secends < 10 ? "0" : ""}${secends}`;
-};
+// Sync actual playback state
+audio.addEventListener("play", () => {
+  isPlaying = true;
+  updatePlayIcon();
+});
 
-// Ended Music
-audio.addEventListener("ended", () => {
+audio.addEventListener("pause", () => {
   isPlaying = false;
-  playButton.firstElementChild.classList.replace("fa-pause", "fa-play");
+  updatePlayIcon();
 });
 
-// Load the initial track
+// Automatically play next song
+audio.addEventListener("ended", nextTrack);
+
+// Handle errors
+audio.addEventListener("error", () => {
+  console.error("Audio loading error:", audio.error);
+});
+
+// Initial volume
+audio.volume = Number(volumeAudio.value);
+
+// Initial track
 loadTrack();

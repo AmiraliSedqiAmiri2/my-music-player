@@ -1,79 +1,121 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=`, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Music Player</title>
-    <link rel="shortcut icon" href="assets/img/music-player-favicon.webp" type="image/x-icon">
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.css"
-    />
-    <link rel="stylesheet" href="./style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <audio src="./assets/music/6861654590_1.mp3" id="audio"></audio>
-      <div class="photo__music">
-        <img
-          src="./assets/img/photo_2026-11-06_23-19-56.jpg"
-          alt="music-photo"
-          class="photo__img"
-        />
-      </div>
-      <div class="mussic__wrapper">
-        <div class="music__info">
-          <span class="music__new">
-            <i class="fa-solid fa-music"></i>
-            Amirali Music Player</span
-          >
-          <h2 class="music__title"></h2>
-          <p class="music__artist"></p>
+  <title>Amirali Music Player</title>
 
-          <div>
-            <input
-              type="range"
-              class="music__progress"
-              min="0"
-              value="0"
-              step="0.01"
-            />
-            <div class="music__time">
-              <span class="current__time">00:00</span>
-              <span class="total__time">00:00</span>
-            </div>
-          </div>
+  <link
+    rel="shortcut icon"
+    href="./assets/img/music-player-favicon.webp"
+    type="image/x-icon"
+  />
 
-          <div class="music__controls">
-            <div class="music__buttons">
-              <button class="prev__btn">
-                <i class="fas fa-step-backward"></i>
-              </button>
-              <button class="play__btn">
-                <i class="fas fa-play"></i>
-              </button>
-              <button class="next__btn">
-                <i class="fas fa-step-forward"></i>
-              </button>
-            </div>
-            <div class="volume__wrapper">
-              <i class="fa fa-volume-down"></i>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                value="1"
-                step="0.01"
-                class="volume__range"
-              />
-              <i class="fa fa-volume-up"></i>
-            </div>
-          </div>
-        </div>
-      </div>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.css"
+  />
+
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- Audio Player -->
+    <audio id="audio" preload="metadata"></audio>
+
+    <!-- Music Image -->
+    <div class="photo__music">
+      <img
+        src="./assets/img/photo_2026-11-06_23-19-56.jpg"
+        alt="Music Cover"
+        class="photo__img"
+      />
     </div>
 
-    <script src="./main.js"></script>
-  </body>
+    <!-- Music Information -->
+    <div class="mussic__wrapper">
+
+      <div class="music__info">
+
+        <span class="music__new">
+          <i class="fa-solid fa-music"></i>
+          Amirali Music Player
+        </span>
+
+        <h2 class="music__title">Music Title</h2>
+
+        <p class="music__artist">Artist Name</p>
+
+        <!-- Progress Bar -->
+        <div>
+          <input
+            type="range"
+            class="music__progress"
+            min="0"
+            max="100"
+            value="0"
+            step="0.01"
+          />
+
+          <div class="music__time">
+            <span class="current__time">0:00</span>
+            <span class="total__time">0:00</span>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="music__controls">
+
+          <div class="music__buttons">
+
+            <button class="prev__btn" type="button" aria-label="Previous song">
+              <i class="fas fa-step-backward"></i>
+            </button>
+
+            <button class="play__btn" type="button" aria-label="Play or pause">
+              <i class="fas fa-play"></i>
+            </button>
+
+            <button class="next__btn" type="button" aria-label="Next song">
+              <i class="fas fa-step-forward"></i>
+            </button>
+
+          </div>
+
+          <!-- Volume -->
+          <div class="volume__wrapper">
+
+            <i class="fa fa-volume-down"></i>
+
+            <input
+              type="range"
+              min="0"
+              max="1"
+              value="1"
+              step="0.01"
+              class="volume__range"
+              aria-label="Volume"
+            />
+
+            <i class="fa fa-volume-up"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- JavaScript -->
+  <script src="./main.js"></script>
+
+</body>
 </html>
