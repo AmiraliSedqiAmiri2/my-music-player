@@ -12,22 +12,16 @@ const nextButton = document.querySelector(".next__btn");
 const volumeAudio = document.querySelector(".volume__range");
 
 const playlist = [
+
   {
     id: 1,
-    title: "Gedaei",
-    artist: "Amir Tataloo",
-    image: "./assets/img/gedaei.jpg",
-    src: "./assets/music/Amirtataloo.mp3",
-  },
-  {
-    id: 2,
     title: "Janam raft 2",
     artist: "Sorena & Bahram",
     image: "./assets/img/bs.jpg",
     src: "./assets/music/janm.mp3",
   },
   {
-    id: 3,
+    id: 2,
     title: "Ghorsaye Abi",
     artist: "Remix",
     image: "./assets/img/back.jpg",
